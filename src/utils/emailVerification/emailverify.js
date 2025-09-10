@@ -3,7 +3,7 @@ import nodemailer from 'nodemailer';
 import variables from '../../storage/env/envConstants.js';
 
 //function handler for sending email
-const sendEmail=async(gmail,message,text)=>{
+const sendEmail=async(gmail,subject,text)=>{
     const transport=await nodemailer.createTransport({
         host: "smtp-relay.brevo.com",
         port: 587,
@@ -16,8 +16,8 @@ const sendEmail=async(gmail,message,text)=>{
     await transport.sendMail({
         from:variables.userMail,
         to:gmail,
-        message,
-        text,
+        subject:subject,
+        text:text,
     });
 }
 
