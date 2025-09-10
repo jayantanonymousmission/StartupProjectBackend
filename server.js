@@ -11,12 +11,8 @@ import logger from "./src/logger/logger.js";
 import variables from "./src/storage/env/envConstants.js";
 
 //make middlwares
-//app.use(cors({origin:"https://auth/sendOtp",Credential:true}));//for solving problems of different ports
-app.use(cors({
-  origin: "https://startup-project-wc1a.onrender.com",  // ya specific domain like: "http://localhost:3000"
-  credentials: true
-}));
-
+//for solving problems of different ports
+app.use(cors({origin: "https://startup-project-wc1a.onrender.com",credentials: true}));
 
 //Security Moddlewares
 app.use(helmet());

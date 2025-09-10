@@ -16,8 +16,7 @@ import loginLimit from "../../middlewares/rateLimiter/loginLimit.js";
 const router=express.Router();
 
 //make requests
-//router.post("/sendOtp",otpLimit,sendOtp);
-router.post("/sendOtp",(req,res)=>res.json({message:"Server is Live through sendOtp"}))
+router.post("/sendOtp",otpLimit,sendOtp);
 router.post("/resendOtp",otpLimit,resendOtp);
 router.post("/verifyOtp",verifyOtp);
 router.post("/register",registrationValidation,validator,register);
