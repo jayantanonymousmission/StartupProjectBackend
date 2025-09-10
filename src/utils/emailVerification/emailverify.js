@@ -8,7 +8,6 @@ const sendEmail=async(gmail,message,text)=>{
         host: "smtp-relay.brevo.com",
         port: 587,
         secure: false,
-        service:"gmail",
         auth:{
             user:variables.userMail,
             pass:variables.userPass,
