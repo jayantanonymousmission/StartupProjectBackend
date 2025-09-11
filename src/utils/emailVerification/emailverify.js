@@ -5,9 +5,7 @@ import variables from '../../storage/env/envConstants.js';
 //function handler for sending email
 const sendEmail=async(gmail,subject,text)=>{
     const transport=nodemailer.createTransport({
-        host: "smtp-relay.brevo.com",
-        port: 587,
-        secure: false,
+        service:gmail,
         auth:{
             user:variables.userMail,
             pass:variables.userPass,
