@@ -9,7 +9,9 @@ const sendEmail=async(gmail,subject,text)=>{
         auth:{
             user:variables.userMail,
             pass:variables.userPass,
-        }
+        },
+        logger:true,
+        debug:true,
     });
     await transport.sendMail({
         from:variables.userMail,
