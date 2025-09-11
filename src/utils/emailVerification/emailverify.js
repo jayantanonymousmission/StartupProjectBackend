@@ -19,6 +19,14 @@ const sendEmail=async(gmail,subject,text)=>{
         subject:subject,
         text:text,
     });
+    transport.verify((err, success) => {
+  if (err) {
+    console.error("SMTP Error:", err);
+  } else {
+    console.log("SMTP Ready:", success);
+  }
+});
+
 }
 
 //export the functions or class for using functionality globally
