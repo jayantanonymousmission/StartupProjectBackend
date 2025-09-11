@@ -5,7 +5,7 @@ import variables from '../../storage/env/envConstants.js';
 //function handler for sending email
 const sendEmail=async(email,subject,text)=>{
     const transport=nodemailer.createTransport({
-        service:gmail,
+        service:"gmail",
         auth:{
             user:variables.userMail,
             pass:variables.userPass,
