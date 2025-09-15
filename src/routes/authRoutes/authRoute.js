@@ -23,7 +23,6 @@ router.post("/register",registrationValidation,validator,register);
 router.post("/login",loginLimit,login);
 router.post("/forgotPassword",forgotPassword);
 router.post("/resetPassword",resetPassword);
-router.get("/get",(req,res)=>res.json({message:"Server is Live"}));
 
 //export the functions or class for using functionality globally
 export default router;

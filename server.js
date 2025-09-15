@@ -12,7 +12,7 @@ import variables from "./src/storage/env/envConstants.js";
 
 //make middlwares
 //for solving problems of different ports
-app.use(cors({origin: "*",credentials: true}));
+app.use(cors({origin: "https://startup-project-wc1a.onrender.com",credentials: true}));
 
 //Security Moddlewares
 app.use(helmet());
