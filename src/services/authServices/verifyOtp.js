@@ -16,18 +16,22 @@ const otpVerifyService=async(req,res)=>{
     //checking conditions if user email already exists
     if(!existingMail){
         logger.warn("Email not exist");
+        res.status(400).json({status:false,message:"Email Not Exist"});
         return;
     }
     if (existingMail.otpExpired < Date.now()){
         logger.warn("OTP Expired");
+        res.status(400).json({status:false,message:"OTP Expired"});
         return;
     }
     if(existingMail.otpVerify){
         logger.warn("User already verified");
+        res.status(400).json({status:false,message:"User Already Verified"});
         return;
     }
     if(existingMail.otp != otp){
         logger.warn("Invalid OTP");
+        res.status(400).json({status:false,message:"Invalid OTP"});
         return;
     }
 

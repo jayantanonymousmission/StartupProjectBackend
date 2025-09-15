@@ -19,10 +19,12 @@ const resendOtpService=async(req,res)=>{
     //checking conditions if user email already exists
     if(!existingMail){
         logger.warn("Email Not Found");
+        res.status(400).json({status:false,message:"Email Not Found"});
         return;
     }
     if(!existingMail.otp){
         logger.warn("Otp not found!First request for otp");
+        res.status(400).json({status:false,message:"OTP Not Found!First Request for OTP"});
         return;
     }
     

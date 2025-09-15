@@ -40,7 +40,7 @@ const sendOtpService=async(req,res)=>{
     res.status(200).json({status:true,message:"OTP Send Successfully"});
     }catch(err){
         logger.error("OTP Failed "+err.message);
-         //res.status(500).json({status:false,message:"OTP Failed"});
+        res.status(500).json({status:false,message:"OTP Failed"});
     }
 }
 //export the functions or class for using functionality globally
