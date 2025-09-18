@@ -46,7 +46,7 @@ const loginService=async(req,res)=>{
 
         //give message
         logger.info("Login Successfully");
-        res.status(200).json({status:true,message:"Login Successfully"});
+        res.status(200).json({status:true,message:"Login Successfully",role:existingUser.role,email:existingUser.email});
 
     }catch(err){
         logger.error("Login Failed"+err.message);
