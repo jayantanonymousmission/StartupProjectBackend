@@ -24,6 +24,7 @@ const registerService=async(req,res)=>{
         //checking conditions
         if(!verifiedUser && !verifiedUser.otpVerify==true){
             logger.warn("Email Not Verified");
+            res.status(400).json({status:false,message:"Email Not Verified"});
             return;
         }
         
@@ -31,6 +32,7 @@ const registerService=async(req,res)=>{
         const registeredUser=await registrationModel.findOne({email}).sort({updatedAt:-1});
         if(registeredUser){
             logger.error("User already Registered");
+            res.status(400).json({status:false,message:"User already Registered"});
             return;
         }
 
@@ -64,6 +66,7 @@ const registerService=async(req,res)=>{
         const hashedPassword=await bcrypt.hash(password,10);
         if(!hashedPassword){
             logger.warn("Password are not Encrypted");
+            res.status(400).json({status:false,message:"Password Not Encrypted"});
             return;
         }
 

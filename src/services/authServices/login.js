@@ -18,12 +18,14 @@ const loginService=async(req,res)=>{
         //checking conditions
         if(!existingUser){
             logger.warn("User Not Found");
+            res.json(400).json({status:false,message:"User Not Found"});
             return;
         }
         //verify password
         const verifyPassword=await bcrypt.compare(password,existingUser.password);
         if(!verifyPassword){
             logger.warn("Invalid Credentials");
+            res.json(400).json({status:false,message:"Invalid Credentials"});
             return;
         }
 
