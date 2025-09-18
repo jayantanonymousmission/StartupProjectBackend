@@ -13,7 +13,7 @@ const registerService=async(req,res)=>{
     //use try catch for handling exceptions
     try{
         //create let variables
-        let userRole="customer";
+        let userRole;
 
         //checking user verify or not
         const verifiedUser=await emailVerificationModel.findOne({otpVerify:true}).sort({updatedAt:-1});
@@ -68,8 +68,8 @@ const registerService=async(req,res)=>{
         }
 
         else{
-            userRole="Invalid Role";
-            code="Invalid Code";
+            logger.warn("Invalid Role and code");
+            res.status(400).json({status:false,message:"Invalid Role and Code"});
         }
 
         //now hash the password
