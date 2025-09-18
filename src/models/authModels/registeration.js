@@ -34,7 +34,6 @@ const registrationSchema = new mongoose.Schema({
     type: String,
     required: true,
     enum: ["superAdmin", "admin", "employee", "worker", "customer"],
-    default: "customer",
   },
   token:{
     type:String,
