@@ -68,6 +68,7 @@ const registerService=async(req,res)=>{
         }
 
         else{
+            userRole="Invalid Role";
             code="Invalid Code";
         }
 
