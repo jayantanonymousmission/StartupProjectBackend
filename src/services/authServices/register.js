@@ -70,8 +70,14 @@ const registerService=async(req,res)=>{
         else{
             logger.warn("Invalid Role and code");
             res.status(400).json({status:false,message:"Invalid Role and Code"});
+            return;
         }
 
+        if (!userRole) {
+            logger.warn("Unauthorized role or invalid code");
+            res.status(400).json({ status: false, message: "Unauthorized role or invalid code" });
+            return;
+        }
         //now hash the password
         const hashedPassword=await bcrypt.hash(password,10);
         if(!hashedPassword){
@@ -95,10 +101,10 @@ const registerService=async(req,res)=>{
 
         //give message
         logger.info("Successfully Registered");
-        res.status(200).json({status:true,message:"Successfully Registered"});
+        return res.status(200).json({status:true,message:"Successfully Registered",role:newUser.role});
     }catch(err){
         logger.error("Registered Failed"+err.message);
-        res.status(500).json({status:false,message:"Registration Failed"});
+        return res.status(500).json({status:false,message:"Registration Failed"});
     }
 }
 
