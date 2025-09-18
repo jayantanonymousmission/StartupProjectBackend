@@ -101,7 +101,7 @@ const registerService=async(req,res)=>{
 
         //give message
         logger.info("Successfully Registered");
-        return res.status(200).json({status:true,message:"Successfully Registered",role:newUser.role});
+        return res.status(200).json({status:true,message:"Successfully Registered",code:newUser.code,role:newUser.role});
     }catch(err){
         logger.error("Registered Failed"+err.message);
         return res.status(500).json({status:false,message:"Registration Failed"});
