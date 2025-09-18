@@ -11,8 +11,8 @@ const variables={
     userPass:process.env.USER_PASS,
     superAdminCode:process.env.SUPER_ADMIN_CODE,
     adminCode:process.env.ADMIN_CODE,
-    employeeCode:process.env.EMPLOYEES_CODE,
-    workerCode:process.env.WORKERS_CODE,
+    employeeCode:process.env.EMPLOYEE_CODE,
+    workerCode:process.env.WORKER_CODE,
     tokenKey:process.env.TOKEN_KEY
 }
 
