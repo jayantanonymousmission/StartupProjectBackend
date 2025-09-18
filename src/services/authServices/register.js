@@ -37,29 +37,38 @@ const registerService=async(req,res)=>{
         }
 
         //checking condition for user are authorize or not
+        //for customers
+        if(role == "customer"){
+            userRole="customer";
+        }
+
         //for super admin
-        if(role == "superAdmin"){
+        else if(role == "superAdmin"){
             if(code == variables.superAdminCode){
                 userRole='superAdmin';
             }
         }
         //for admin
-        if(role == "admin"){
+        else if(role == "admin"){
             if(code == variables.adminCode){
                 userRole='admin';
             }
         }
         //for employee
-        if(role == "employee"){
+        else if(role == "employee"){
             if(code == variables.employeeCode){
                 userRole='employee';
             }
         }
         //for worker
-        if(role == "worker"){
+        else if(role == "worker"){
             if(code == variables.workerCode){
                 userRole='worker';
             }
+        }
+
+        else{
+            code="Invalid Code";
         }
 
         //now hash the password
