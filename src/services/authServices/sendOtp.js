@@ -17,8 +17,8 @@ const sendOtpService=async(req,res)=>{
 
     //checking conditions if user email already exists
     if(existingMail){
-        logger.warn("Email already exist");
-        res.status(400).json({status:false,message:"Email Already Verified"});
+        logger.warn("Email Already Exist");
+        res.status(400).json({status:false,message:"Email Already Exist"});
         return;
     }
 
