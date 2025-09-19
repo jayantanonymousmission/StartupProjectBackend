@@ -15,16 +15,19 @@ const resetPasswordService=async(req,res)=>{
     const emailVerification=await emailVerificationModel.findOne({email});
 
     //checking conditions
-    if(emailVerification.isVerified==true){
+    if(emailVerification.isVerified == true){
         logger.warn("Email already verified");
+        res.status(400).json({status:false,message:"Email Already Verified"});
         return;
     }
-    if(emailVerification.otp!=otp){
+    if(emailVerification.otp != otp){
         logger.warn("Invalid OTP");
+        res.status(400).json({status:false,message:"Invalid OTP"});
         return;
     }
-    if(emailVerification.otpExpire<Date()){
+    if(emailVerification.otpExpire < Date()){
         logger.warn("OTP Expired");
+        res.status(400).json({status:false,message:"OTP Expired"});
         return;
     }
     
@@ -32,6 +35,7 @@ const resetPasswordService=async(req,res)=>{
     const existingUser=await registrationModel.findOne({email});
     if(!existingUser){
         logger.warn("User Not Found");
+        res.status(400).json({status:false,message:"User Not Found"});
         return;
     }
 

@@ -17,6 +17,7 @@ const forgotPasswordService=async(req,res)=>{
         const emailVerification=await emailVerificationModel.findOne({email});
         if(!emailVerification){
             logger.warn("Email Not Verified");
+            res.status(400).json({status:false,message:"Email Not Verified"});
             return;
         }
 
