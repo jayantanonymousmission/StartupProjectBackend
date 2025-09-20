@@ -7,11 +7,9 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import authRoutes from "./src/routes/authRoutes/authRoute.js";
+import variables from "./src/storage/env/envConstants.js";
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-const HOST = process.env.HOST || "0.0.0.0";
-
 
 // ✅ CORS middleware
 app.use(cors({
@@ -29,6 +27,6 @@ app.use(express.json());
 app.use("/auth", authRoutes);
 
 // Start server
-app.listen(PORT, HOST, () => {
-  console.log(`✅ Server running at http://${HOST}:${PORT}`);
+app.listen(variables.port, variables.host, () => {
+  console.log(`✅ Server running at http://${variables.host}:${variables.port}`);
 });
