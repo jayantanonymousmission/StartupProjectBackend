@@ -25,6 +25,7 @@ app.use((req, res, next) => {
   next();
 });
 app.use(cors({
+    //allowedOrigins,
   origin: function(origin, callback) {
     if (!origin){
         print("Server to Server request or curl,no origin")
@@ -43,7 +44,8 @@ app.use(cors({
 }));
 
 // ✅ handle preflight (important for Chrome)
-app.options("*", cors());
+app.options("/auth/*", cors());   // all auth routes
+app.options("/*", cors());
 //Security Middlewares
 app.use(helmet({
   crossOriginResourcePolicy: false,  // ⚠️ to avoid blocking frontend resources
