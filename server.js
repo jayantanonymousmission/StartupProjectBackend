@@ -20,9 +20,6 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-//Handle Preflight Requests (Express v5 compatible)
-app.options("/{splat*}", cors());
-
 
 //Security Moddlewares
 app.use(helmet());
