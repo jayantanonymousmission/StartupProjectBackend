@@ -11,8 +11,8 @@ import logger from "./src/logger/logger.js";
 import variables from "./src/storage/env/envConstants.js";
 
 //variable:
-port=process.env.PORT||3000;
-host=process.env.HOST||"0.0.0.0";
+const port=process.env.PORT||3000;
+const host=process.env.HOST||"0.0.0.0";
 
 //make middlwares
 //for solving problems of different ports
