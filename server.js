@@ -10,6 +10,10 @@ import morgan from "morgan";
 import logger from "./src/logger/logger.js";
 import variables from "./src/storage/env/envConstants.js";
 
+//variable:
+port=process.env.PORT||3000;
+host=process.env.HOST||"0.0.0.0";
+
 //make middlwares
 //for solving problems of different ports
 //CORS Middleware (Production-safe)
@@ -25,9 +29,9 @@ app.use(cors({
 app.use(helmet());
 app.use(morgan("dev"));
 
-app.listen(variables.port,variables.host,(err)=>{
+app.listen(port,host,(err)=>{
     if(err){
-        logger.error(`Server is not running on:https://{variables.port}:{variables.host}`,err);
+        logger.error(`Server is not running on:https://{host}:{port}`,err);
         process.exit(0);
     }
     else
