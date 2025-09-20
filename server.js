@@ -1,34 +1,21 @@
-//configure dotenv for implementing the env configuration or variables
-import dotenv from "dotenv";
-dotenv.config();
-
-//import some libraries and functions
-import app from "./app.js";
-import cors from "cors";
-import helmet from "helmet";
-import morgan from "morgan";
-import logger from "./src/logger/logger.js";
-
-//variable:
-const port = process.env.PORT || 3000;
-const host = process.env.HOST || "0.0.0.0";
-
-// ✅ Allowed origins (production + dev)
 const allowedOrigins = [
-  "https://startup-project.netlify.app",   // production frontend
-  "http://localhost:3000",                 // local React dev
-  "http://127.0.0.1:3000",                 // localhost alias
-  "http://localhost:5000",                 // flutter web dev (kabhi is port pe bhi run hota hai)
+  "https://startup-project.netlify.app",  // ✅ Netlify live frontend
+  "http://localhost:3000",                // Dev local
+  "http://127.0.0.1:3000",
+  /^http:\/\/localhost:\d+$/,             // ✅ Any random localhost port (Flutter Web dev)
+  /^http:\/\/127\.0\.0\.1:\d+$/           // ✅ 127.x.x.x ports
 ];
 
-//make middlewares
-//CORS Middleware (Production-safe)
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin) return callback(null, true); // allow mobile apps / curl
+    if (
+      allowedOrigins.includes(origin) ||
+      allowedOrigins.some(o => o instanceof RegExp && o.test(origin))
+    ) {
       callback(null, true);
     } else {
-      callback(new Error("Not allowed by CORS"));
+      callback(new Error("Not allowed by CORS: " + origin));
     }
   },
   credentials: true,
@@ -36,26 +23,5 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-//Security Middlewares
-app.use(helmet({
-  crossOriginResourcePolicy: false,  // ⚠️ to avoid blocking frontend resources
-}));
-app.use(morgan("dev"));
-
-//Start Server
-app.listen(port, host, (err) => {
-  if (err) {
-    logger.error(`Server is not running on http://${host}:${port}`, err);
-    process.exit(0);
-  } else {
-    logger.info(`✅ Server is running on http://${host}:${port}`);
-  }
-});
-
-//Graceful shutdown
-process.on("SIGINT", (err) => {
-  if (err) logger.error("Server is not shutting down properly", err);
-
-  logger.info("Server is shutting down successfully");
-  process.exit(0);
-});
+// ✅ Very important for preflight
+app.options("*", cors());
