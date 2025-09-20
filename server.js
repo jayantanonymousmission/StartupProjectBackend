@@ -16,7 +16,6 @@ const HOST = process.env.HOST || "0.0.0.0";
 // ✅ CORS middleware
 app.use(cors({
   origin:"*",
-  credentials: true,
 }));
 
 // Security + logging
