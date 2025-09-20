@@ -24,18 +24,19 @@ app.use((req, res, next) => {
   console.log("🌐 Incoming request:", req.method, req.url, "Origin:", origin);
   next();
 });
+
 app.use(cors({
-    //allowedOrigins,
   origin: function(origin, callback) {
     if (!origin){
-        print("Server to Server request or curl,no origin")
-        return callback(null, true); // server-to-server or curl
+        console.log("✅ Server to Server request or curl, no origin");
+        return callback(null, true);
     }
-    if (allowedOrigins.some(o => (o instanceof RegExp ? o.test(origin) : o === origin))) {
-      callback(null, true);
+    const allowed = allowedOrigins.some(o => o instanceof RegExp ? o.test(origin) : o === origin);
+    if (allowed) {
+        callback(null, true);
     } else {
-      console.warn("❌ Blocked by CORS:", origin);
-      callback(new Error("Not allowed by CORS: " + origin));
+        console.warn("❌ Blocked by CORS:", origin);
+        callback(new Error("Not allowed by CORS: " + origin));
     }
   },
   credentials: true,
@@ -43,9 +44,9 @@ app.use(cors({
   allowedHeaders: ["Content-Type","Authorization"]
 }));
 
+
 // ✅ handle preflight (important for Chrome)
-app.options("/auth/*", cors());   // all auth routes
-app.options("/*", cors());
+app.use(/(.*)/, cors());
 //Security Middlewares
 app.use(helmet({
   crossOriginResourcePolicy: false,  // ⚠️ to avoid blocking frontend resources
