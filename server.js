@@ -21,7 +21,7 @@ app.use(cors({
 }));
 
 //Handle Preflight Requests (Express v5 compatible)
-app.options("/:splat*", cors());
+app.options("/{splat*}", cors());
 
 
 //Security Moddlewares
