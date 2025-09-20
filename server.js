@@ -12,7 +12,8 @@ import variables from "./src/storage/env/envConstants.js";
 
 //make middlwares
 //for solving problems of different ports
-app.use(cors({origin: "https://startup-project.netlify.app/",credentials: true}));
+app.use(cors({origin: "https://startup-project.netlify.app",credentials: true}));
+app.options("*",cors());
 
 //Security Moddlewares
 app.use(helmet());
