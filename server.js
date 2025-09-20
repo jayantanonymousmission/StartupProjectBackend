@@ -16,19 +16,21 @@ const host = process.env.HOST || "0.0.0.0";
 // ✅ allowed origins list
 const allowedOrigins = [
   "https://startup-project.netlify.app",   // production frontend
-  "http://localhost:3000",                 // dev (react)
-  "http://127.0.0.1:3000",
-  /^http:\/\/localhost:\d+$/,              // allow any random localhost port
-  /^http:\/\/127\.0\.0\.1:\d+$/            // allow any random 127.x.x.x port
+  /^http:\/\/localhost:\d+$/,           // allow any random 127.x.x.x port
 ];
 
+app.use((req, res, next) => {
+  const origin = req.headers.origin || "no origin (server request)";
+  console.log("🌐 Incoming request:", req.method, req.url, "Origin:", origin);
+  next();
+});
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true); // allow server-to-server / curl
-    if (
-      allowedOrigins.includes(origin) ||
-      allowedOrigins.some(o => o instanceof RegExp && o.test(origin))
-    ) {
+  origin: function(origin, callback) {
+    if (!origin){
+        print("Server to Server request or curl,no origin")
+        return callback(null, true); // server-to-server or curl
+    }
+    if (allowedOrigins.some(o => (o instanceof RegExp ? o.test(origin) : o === origin))) {
       callback(null, true);
     } else {
       console.warn("❌ Blocked by CORS:", origin);
@@ -36,8 +38,8 @@ app.use(cors({
     }
   },
   credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
+  methods: ["GET","POST","PUT","DELETE","OPTIONS"],
+  allowedHeaders: ["Content-Type","Authorization"]
 }));
 
 // ✅ handle preflight (important for Chrome)
@@ -52,7 +54,7 @@ app.use(morgan("dev"));
 app.listen(port, host, (err) => {
   if (err) {
     logger.error(`Server is not running on http://${host}:${port}`, err);
-    process.exit(0);
+    process.exit(1);
   } else {
     logger.info(`✅ Server is running on http://${host}:${port}`);
   }
