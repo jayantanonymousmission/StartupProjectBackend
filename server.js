@@ -15,7 +15,7 @@ const HOST = process.env.HOST || "0.0.0.0";
 
 // ✅ CORS middleware
 app.use(cors({
-  origin:"https://startup-project.netlify.app",
+  origin:"*",
   credentials: true,
 }));
 
