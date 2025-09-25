@@ -24,4 +24,4 @@ const emailVerificationSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 //export the functions or class for using functionality globally
-export default mongoose.model("Email_Verification", emailVerificationSchema, "Email_Verification");
+export default mongoose.model("EmailVerification", emailVerificationSchema, "EmailVerification");

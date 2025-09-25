@@ -11,17 +11,18 @@ import variables from "./src/storage/env/envConstants.js";
 
 // ✅ CORS middleware
 app.use(cors({
-  origin:"*",
-}));
+   origin:"http://localhost:57896", // Match Flutter web origin
+  credentials: true
 
+}));
 // Security + logging
-app.use(helmet({ crossOriginResourcePolicy: false }));
+app.use(helmet());
 app.use(morgan("dev"));
 
 // Routes
 app.use("/auth", authRoutes);
 
 // Start server
-app.listen(variables.port, variables.host, () => {
+app.listen(variables.port,variables.host, () => {
   console.log(`✅ Server running at http://${variables.host}:${variables.port}`);
 });

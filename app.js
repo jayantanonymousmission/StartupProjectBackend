@@ -5,13 +5,13 @@ import db from"./src/config/databaseConnectivity.js";
 
 //make instance variable of express
 const app=express();
+app.set("trust proxy",1);
 
 //use database connection
 db();
 
 //use middlwares 
 app.use(express.json());
-app.set("trust proxy",1);
 
 //for routes
 app.use("/auth",routes);
