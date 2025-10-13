@@ -1,28 +1,32 @@
-//import some libraries and functions
 import jwt from "jsonwebtoken";
 import logger from "../../logger/logger.js";
 import variables from "../../storage/env/envConstants.js";
+import registrationModel from "../../models/authModels/registeration.js";
 
-//function for veify token
-const tokenVerification = (req, res, next) => {
-    //use try catch for handling errors 
-    try {
-        const token = req.headers.authorization?.split(" ")[1];
-        //checking condition
-        if (!token) {
-            logger.warn("Token Not Found");
-        }
+const tokenVerification = async (req, res, next) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
 
-        //token verify
-        verifyToken = jwt.verify(token, variables.tokenKey);
-        
-        req.user = verifyToken;
-        next();
-    } catch (err) {
-        logger.error("Something went wrong in token" + err.message);
-        res.status(500).json({ status: true, message: "Something went wrong in token" });
+    if (!token) {
+      logger.warn("Token Not Found");
+      return res.status(401).json({ status: false, message: "Token not found" });
     }
-}
 
-//export the functions or class for using functionality globally
+    const decoded = jwt.verify(token, variables.tokenKey);
+
+    const user = await registrationModel.findById(decoded.id); // ✅ Fetch full user
+    if (!user) {
+      logger.warn("User not found");
+      return res.status(404).json({ status: false, message: "User not found" });
+    }
+
+    req.user = user;
+    req.userId=user._id;
+    next();
+  } catch (err) {
+    logger.error("Something went wrong in token: " + err.message);
+    res.status(500).json({ status: false, message: "Something went wrong in token" });
+  }
+};
+
 export default tokenVerification;

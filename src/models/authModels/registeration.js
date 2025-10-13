@@ -37,7 +37,7 @@ const registrationSchema = new mongoose.Schema({
   },
   token:{
     type:String,
-  }
+  },
 }, { timestamps: true });
 
 //export the functions or class for using functionality globally
