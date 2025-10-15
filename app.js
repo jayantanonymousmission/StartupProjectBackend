@@ -3,6 +3,7 @@ import express from"express";
 import routes from "./src/routes/authRoutes/authRoute.js";
 import ticketRoutes from "./src/routes/ticketRoutes/ticketRoute.js";
 import count from "./src/routes/counts/counts.js";
+import role from "./src/routes/updateRole/updateRole.js";
 import db from"./src/config/databaseConnectivity.js";
 
 //make instance variable of express
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use("/auth",routes);
 app.use("/ticket",ticketRoutes);
 app.use("/count",count);
+app.use("/role",role);
 
 //export the functions or class for using functionality globally
 export default app;
