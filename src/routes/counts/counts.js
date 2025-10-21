@@ -6,6 +6,7 @@ import totalEmployees from "../../controllers/counts/totalNumberOfRoles/totalEmp
 import totalWorkers from "../../controllers/counts/totalNumberOfRoles/totalWorkers.js";
 
 import tokenVerification from "../../middlewares/authMiddlwares/tokenverification.js";
+import roleVerification from "../../middlewares/authMiddlwares/roleVerification.js";
 
 import totalNumberOfTickets from "../../controllers/counts/tickets/totalNumberOfTickets.js";
 import recentlyRoleBasedTickets from "../../controllers/counts/tickets/recentlyRoleBasedTickets.js";
@@ -25,7 +26,7 @@ router.get("/totalWorkers",totalWorkers);
 router.get("/totalTickets/:role",totalNumberOfTickets);
 
 //recently role based tickets
-router.get("/recentlyRoleBasedTickets",tokenVerification,recentlyRoleBasedTickets);
+router.get("/recentlyRoleBasedTickets/:role",tokenVerification,roleVerification("customer","worker","employee","admin","superAdmin"),recentlyRoleBasedTickets);
 
 //total number of status
 router.get("/totalNumberOfStatus",tokenVerification,totalNumberOfStatus);

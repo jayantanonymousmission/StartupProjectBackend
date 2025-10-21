@@ -11,10 +11,9 @@ const totalNumberOfTickets = async (req, res) => {
 
         // Step 1: Find all users with that role
         const users = await registerationModel.find({ role: roleName }, { _id: 1 });
-
         // Step 2: Extract their IDs
         const userIds = users.map(user => user._id);
-
+        
         // Step 3: Count tickets where created_by matches any of those IDs
         const count = await ticketModel.countDocuments({created_by: { $in: userIds } });
 

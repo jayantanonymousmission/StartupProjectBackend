@@ -22,6 +22,7 @@ const tokenVerification = async (req, res, next) => {
 
     req.user = user;
     req.userId=user._id;
+    req.role=user.role;
     next();
   } catch (err) {
     logger.error("Something went wrong in token: " + err.message);

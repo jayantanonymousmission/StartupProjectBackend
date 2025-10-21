@@ -74,7 +74,7 @@ else if (role === "admin") {
     });
     await ticket.save();
 
-    logger.info("Ticket created successfully");
+    logger.info("Ticket Successfully Generated");
     return res.status(201).json({
       status: true,
       message: "Ticket Successfully Generated",

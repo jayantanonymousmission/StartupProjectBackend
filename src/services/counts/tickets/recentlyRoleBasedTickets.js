@@ -1,34 +1,76 @@
-//import some libraries and files//import some libraries and files
 import ticketModel from "../../../models/ticket_operations/generate_ticket.js";
 import registerationModel from "../../../models/authModels/registeration.js";
 import logger from "../../../logger/logger.js";
 
-//create a function for count total numbers of Admin in database
 const totalNumberOfTickets = async (req, res) => {
-    //use exception handling for handling the errors
-    try {
-        const id=req.userId;
+  try {
+    const loggedInUserId = req.userId;    // token se
+    const loggedInRole = req.role;        // token/middleware se
+    const targetRole = req.params.role;   // URL se (e.g. employee, worker, etc.)
 
-        // Step 1: Find all users with that role
-        const users = await registerationModel.find({_id:id});
+    // 🔹 Access hierarchy map
+    const accessMap = {
+      superAdmin: ["admin", "employee", "worker", "customer"],
+      admin: ["admin","employee", "worker", "customer"],
+      employee: ["employee","worker", "customer"],
+      worker: ["worker"],
+      customer: ["customer"],
+    };
 
-        //checking conditions
-        if(!users){
-            logger.warn("User Not Found");
-            return res.status(400).json({status:false,message:"User Not Found"});
-        }
+    const allowedRoles = accessMap[loggedInRole] || [];
+    const formattedRole =targetRole.charAt(0) + targetRole.slice(1);
 
-        //find id in ticket data
-        const recentlyTickets = await ticketModel.find({created_by:id}).sort({createdAt:-1}).limit(5);
-
-        //send response
-        logger.info("Ticket Successfully fetched");
-        return res.status(200).json({status:true,message:"Ticket Successfully fetched",recentlyTickets});
-    } catch (err) {
-        logger.error("Something went wrong in recently tickets")
-        return res.status(500).json({status:false,message:"Some went wrong in recently tickets"});
+    // 🔒 Check if the logged-in user can access this role’s tickets
+    if (!allowedRoles.includes(formattedRole) && formattedRole !== loggedInRole) {
+      return res.status(403).json({
+        status: false,
+        message: `${loggedInRole} cannot view ${formattedRole} tickets`,
+      });
     }
-}
 
-//export the functions or class for using functionality globally
-export default totalNumberOfTickets; 
+    let filter = {};
+
+    // 🧠 Case 1: User viewing own tickets
+    if (formattedRole === loggedInRole) {
+      filter = { created_by: loggedInUserId };
+    }
+    // 🧠 Case 2: Viewing other role’s tickets
+    else {
+      // sab users jinka role targetRole hai
+      const targetUsers = await registerationModel
+        .find({ role: formattedRole })
+        .select("_id");
+
+      const targetIds = targetUsers.map((u) => u._id);
+
+      // Agar employee worker tickets dekh raha hai => sirf apne under ke workers
+      if (loggedInRole === "Employee" && formattedRole === "Worker") {
+        filter = {
+          created_by: { $in: targetIds },
+          assigned_to: loggedInUserId, // sirf uske under ke worker tickets
+        };
+      } else {
+        filter = { created_by: { $in: targetIds } };
+      }
+    }
+
+    // 🔹 Get recent 5 tickets
+    const recentlyTickets = await ticketModel
+      .find(filter)
+      .sort({ createdAt: -1 })
+      .limit(5);
+
+    return res.status(200).json({
+      status: true,
+      message: `Recent ${formattedRole} tickets fetched successfully for ${loggedInRole}`,
+      recentlyTickets,
+    });
+  } catch (err) {
+    logger.error("Error fetching tickets: " + err.message);
+    return res
+      .status(500)
+      .json({ status: false, message: "Something went wrong", error: err.message });
+  }
+};
+
+export default totalNumberOfTickets;
